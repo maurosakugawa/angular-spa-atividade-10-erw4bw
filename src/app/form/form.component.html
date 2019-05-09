@@ -1,0 +1,43 @@
+<div class="container">
+<h4>Cadastro de Usuários</h4>
+<form class="formulario" [formGroup]="controle">
+	<div>
+		<mat-form-field>
+			<input matInput placeholder="Nome" maxlength="40" formControlName="nome" required>
+      <mat-hint>Forneça o seu nome completo</mat-hint>
+      <mat-error *ngIf="controle.get('nome').hasError('pattern')">
+        O nome só pode ter letras e espaços
+      </mat-error>
+      <mat-error *ngIf="controle.get('nome').hasError('minlength') && !controle.get('nome').hasError('pattern')">
+        O nome precisa ter pelo menos 5 caracteres
+      </mat-error>
+      <mat-error *ngIf="controle.get('nome').hasError('required')">
+        O nome é obrigatório
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+
+  <div>
+    <mat-form-field>
+      <input matInput placeholder="Cidade" 
+      formControlName="cidade" [matAutocomplete]="auto" required>
+        <mat-hint>Forneça o nome da sua cidade</mat-hint>
+        <mat-error *ngIf="controle.get('cidade').hasError('pattern')">
+           A cidade só pode ter letras e espaços
+        </mat-error>
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let cidade of filtro | async" [value]="cidade">{{cidade}}</mat-option>
+        </mat-autocomplete>
+       <mat-error *ngIf="controle.get('cidade').hasError('required')">
+          A cidade é obrigatória
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="botoes">
+    <button mat-stroked-button type="submit" [disabled]="!controle.valid" (click)="salvar()">Salvar</button>
+    <button mat-stroked-button type="button" (click)="controle.reset()">Limpar</button>
+  </div>
+</form>
+</div>
